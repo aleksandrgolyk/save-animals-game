@@ -64,23 +64,6 @@ module.exports = (env, argv) => {
           include: /stylesheets|node_modules/,
           use: ["style-loader", "css-loader"],
         },
-        {
-          test: /\.scss$/,
-          include: /stylesheets/,
-          use: ["style-loader", "css-loader", "sass-loader"],
-        },
-        {
-          test: /\.(png|svg|jpg|gif|jpe?g)$/,
-          use: [
-            {
-              options: {
-                name: "[name].[ext]",
-                outputPath: "images/",
-              },
-              loader: "file-loader",
-            },
-          ],
-        },
       ],
     },
     resolve: {
