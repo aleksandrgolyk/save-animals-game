@@ -12,6 +12,7 @@ export const getRandomPosition = (
   let validPosition = false;
 
   while (!validPosition) {
+    // take a random position within the game area but with extra space - not to close
     x = Math.random() * (maxWidth - 3 * animalSize) + animalSize;
     y = Math.random() * (maxHeight - 3 * animalSize) + animalSize;
     // we have to check if the animal spawn place is not in the yard and outside of the game area

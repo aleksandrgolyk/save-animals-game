@@ -53,9 +53,6 @@ export const spawnAnimals = () => {
   // Start the first call
   spawn();
 };
-// export const spawnAnimals = () => {
-//   setInterval(createAnimals, getRandomTime());
-// };
 
 // Function to update the positions of animals following the main hero
 export const updateFollowingAnimals = () => {
