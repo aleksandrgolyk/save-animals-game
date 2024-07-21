@@ -4,19 +4,20 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = (env, argv) => {
   return {
-    stats: "minimal", // Keep console output easy to read.
-    entry: "./src/index.ts", // Your program entry point
+    stats: "minimal",
+    entry: "./src/index.ts",
 
-    // Your build destination
+    // build destination
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "bundle.js",
+      publicPath: "/",
     },
 
     // Config for your testing server
     devServer: {
       compress: true,
-      allowedHosts: "all", // If you are using WebpackDevServer as your production server, please fix this line!
+      allowedHosts: "all",
       static: false,
       client: {
         logging: "warn",
@@ -92,7 +93,7 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: "index.html",
         hash: true,
-        minify: false,
+        minify: argv.mode === "production" ? { collapseWhitespace: true } : false,
       }),
     ],
   };
