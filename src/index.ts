@@ -1,8 +1,8 @@
 import * as PIXI from "pixi.js";
 
 const app = new PIXI.Application({
-  width: 1000,
-  height: 800,
+  width: 300,
+  height: 200,
   backgroundColor: 0x00ff00,
   view: document.getElementById("game-canvas") as HTMLCanvasElement,
 });
@@ -83,8 +83,9 @@ const followDistance = 30; // Distance between animals in the queue
 
 // Function to move Main Hero to a position
 const moveMainHero = (x: number, y: number) => {
-  targetX = x;
-  targetY = y;
+  // Limit the target position to the bounds of the field
+  targetX = Math.min(Math.max(x, 20), app.screen.width - 20);
+  targetY = Math.min(Math.max(y, 20), app.screen.height - 20);
 };
 
 // ===========================================
