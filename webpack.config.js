@@ -1,5 +1,4 @@
 const path = require("path");
-const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
@@ -88,11 +87,6 @@ module.exports = (env, argv) => {
     },
 
     plugins: [
-      // Copy our static assets to the final build
-      //  not goingto add any assets for now
-      // new CopyPlugin({
-      //   patterns: [{ from: 'assets/', to: "assets/" }],
-      // }),
 
       // Make an index.html from the template
       new HtmlWebpackPlugin({

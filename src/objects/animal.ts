@@ -44,8 +44,18 @@ export const createAnimals = () => {
 
 // Function to spawn animals at random intervals
 export const spawnAnimals = () => {
-  setInterval(createAnimals, getRandomTime());
+  const spawn = () => {
+    createAnimals();
+    // Schedule the next call to this function after a random delay
+    setTimeout(spawn, getRandomTime());
+  };
+
+  // Start the first call
+  spawn();
 };
+// export const spawnAnimals = () => {
+//   setInterval(createAnimals, getRandomTime());
+// };
 
 // Function to update the positions of animals following the main hero
 export const updateFollowingAnimals = () => {
