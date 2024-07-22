@@ -1,8 +1,9 @@
 import { CONFIG } from "../config";
 
+const { spawnIntervalMin, spawnIntervalMax } = CONFIG;
+
 export const getRandomTime = (): number => {
   return (
-    Math.random() * (CONFIG.spawnIntervalMax - CONFIG.spawnIntervalMin) +
-    CONFIG.spawnIntervalMin
+    Math.random() * (spawnIntervalMax - spawnIntervalMin) + spawnIntervalMin
   );
 };
