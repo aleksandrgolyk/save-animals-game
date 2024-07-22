@@ -1,4 +1,5 @@
 export const CONFIG = {
+  fieldSize: [900, 600],
   animalsAllowed: 40,
   animalSize: 10,
   yardSize: 100,
@@ -9,5 +10,6 @@ export const CONFIG = {
   maxSpawnAmount: 5,
   maxFollowers: 5,
   speed: 10,
+  maxAnimalSpeed: 2,
   followDistance: 30,
 };
