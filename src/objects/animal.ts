@@ -5,6 +5,7 @@ import { Position } from "../models/position";
 import { app } from "../app";
 import { getRandomPosition } from "../utils/randomPosition";
 import { getRandomTime } from "../utils/randomTime";
+import { increaseScore } from "./score";
 import { mainHero } from "./hero";
 import { yard } from "./yard";
 
@@ -22,16 +23,6 @@ const {
 // Animals array and following animals array
 export const animals: PIXI.Graphics[] = [];
 export const followingAnimals: PIXI.Graphics[] = [];
-
-// Score
-let score = 0;
-const scoreText = new PIXI.Text("Score: 0", { fontSize: 24, fill: 0x000000 });
-scoreText.x = 20;
-scoreText.y = 20;
-app.stage.addChild(scoreText);
-const updateScore = () => {
-  scoreText.text = `Score: ${score}`;
-};
 
 const createAnimal = (position: Position): PIXI.Graphics => {
   const animal = new PIXI.Graphics();
@@ -125,8 +116,7 @@ export const updateFollowingAnimals = () => {
       app.stage.removeChild(animal);
       followingAnimals.splice(index, 1);
       animals.splice(animals.indexOf(animal), 1);
-      score += 1;
-      updateScore();
+      increaseScore();
     }
   });
 };
@@ -151,32 +141,37 @@ const patrolAnimal = (animal: PIXI.Graphics) => {
   animal.x += dx;
   animal.y += dy;
 
-  // check if animal is outside of the game area - then redirect it to another direction
-  if (animal.x < animalSize) {
-    animal.x = animalSize;
-    patrol.angle = Math.random() * Math.PI * 2;
-  }
-  if (animal.x > app.screen.width - animalSize) {
-    animal.x = app.screen.width - animalSize;
-    patrol.angle = Math.random() * Math.PI * 2;
-  }
-  if (animal.y < animalSize) {
-    animal.y = animalSize;
-    patrol.angle = Math.random() * Math.PI * 2;
-  }
-  if (animal.y > app.screen.height - animalSize) {
-    animal.y = app.screen.height - animalSize;
-    patrol.angle = Math.random() * Math.PI * 2;
-  }
+  // we need to check if the animal is outside of the game area boundaries according to all axis and redirect it to another direction
+  const boundaries = [
+    { axis: "x", min: animalSize, max: app.screen.width - animalSize },
+    { axis: "y", min: animalSize, max: app.screen.height - animalSize },
+  ];
 
-  // here we check if the animal is inside the yard
+  boundaries.forEach(
+    ({ axis, min, max }: { axis: string; min: number; max: number }) => {
+      if ((animal as any)[axis] < min) {
+        (animal as any)[axis] = min;
+        patrol.angle = Math.random() * Math.PI * 2;
+      }
+      if ((animal as any)[axis] > max) {
+        (animal as any)[axis] = max;
+        patrol.angle = Math.random() * Math.PI * 2;
+      }
+    }
+  );
+
+  // here we check if the animal coordinates are inside the yard
+  const isWithinBounds = (value: number, min: number, max: number): boolean => {
+    return value >= min && value <= max;
+  };
+
+  // Here we check if the animal is inside the yard
   const isInsideYard = (x: number, y: number): boolean => {
-    return (
-      x >= yard.x - animalSize &&
-      x <= yard.x + yard.width + animalSize &&
-      y >= yard.y - animalSize &&
-      y <= yard.y + yard.height + animalSize
-    );
+    const xMin = yard.x - animalSize;
+    const xMax = yard.x + yard.width + animalSize;
+    const yMin = yard.y - animalSize;
+    const yMax = yard.y + yard.height + animalSize;
+    return isWithinBounds(x, xMin, xMax) && isWithinBounds(y, yMin, yMax);
   };
 
   // if animal is close to yard without Hero - redirect it
